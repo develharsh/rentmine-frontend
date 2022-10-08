@@ -8,11 +8,13 @@ import {
 } from "react-router-dom";
 import Home from "./pages/home";
 import Signin from "./components/signin";
+import Loading from "./components/design/loading";
 
 function App() {
   return (
     <Router>
       <Signin />
+      <Loading />
       <Routes>
         <Route exact path="/" element={<Home />} />
         {/* <Route exact path="/signup" element={<Signup />} />
