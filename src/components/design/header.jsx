@@ -1,4 +1,3 @@
-import "../../styles/components/design/header.css";
 import {
   createStyles,
   Header,
@@ -104,6 +103,16 @@ const useStyles = createStyles((theme) => ({
       display: "none",
     },
   },
+  logo: {
+    height: "2rem",
+    // border: "2px solid red",
+    // [theme.fn.smallerThan("md")]: {
+    //   border: "2px solid blue",
+    // },
+    // [theme.fn.smallerThan("sm")]: {
+    //   border: "2px solid green",
+    // },
+  },
 }));
 
 const mockdata = [
@@ -186,7 +195,7 @@ export default function HeaderMegaMenu() {
           <img
             src="https://languate.vercel.app/assets/logo.png"
             alt="Rentmine Logo"
-            className="header-logo"
+            className={classes.logo}
           />
           <Group
             sx={{ height: "100%" }}

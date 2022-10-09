@@ -5,7 +5,7 @@ import axios from "axios";
 import { ACTIONS } from "./actions";
 import { showNotification } from "@mantine/notifications";
 import { IconInfoCircle } from "@tabler/icons";
-import { BASE_URL } from "../utils/hardcoded";
+import Utils from "../utils/hardcoded";
 
 export const DataContext = createContext();
 
@@ -20,7 +20,7 @@ export const DataProvider = ({ children }) => {
       try {
         const response = await axios({
           method: "GET",
-          url: `${BASE_URL}/v1/user/load-session`,
+          url: `${Utils.BASE_URL}/v1/user/load-session`,
           headers: {
             Authorization: `Bearer ${token}`,
           },

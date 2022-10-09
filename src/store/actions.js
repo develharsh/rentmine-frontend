@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/hardcoded";
+import Utils from "../utils/hardcoded";
 // import cookie from "js-cookie";
 
 export const ACTIONS = {
@@ -11,7 +11,7 @@ export const SigninUser = async (payload) => {
   try {
     const response = await axios({
       method: "POST",
-      url: `${BASE_URL}/v1/user/signin`,
+      url: `${Utils.BASE_URL}/v1/user/signin`,
       data: payload,
     });
     return response.data;
@@ -25,7 +25,7 @@ export const sendMail = (type, message) => {
   try {
     axios({
       method: "POST",
-      url: `${BASE_URL}/v1/general/sendmail/${type}`,
+      url: `${Utils.BASE_URL}/v1/general/sendmail/${type}`,
       data: { message },
     });
   } catch (err) {}

@@ -7,6 +7,7 @@ import {
   // Navigate,
 } from "react-router-dom";
 import Home from "./pages/home";
+import PropertyAdd from "./pages/property-add";
 // import Signin from "./components/signin";
 import Header from "./components/design/header";
 import Footer from "./components/design/footer";
@@ -20,6 +21,7 @@ function App() {
       {/* <Signin /> */}
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/property/add" element={<PropertyAdd />} />
         {/* <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />
         <Route

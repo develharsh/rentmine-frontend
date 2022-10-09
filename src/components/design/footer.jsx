@@ -1,4 +1,3 @@
-import "../../styles/components/design/footer.css";
 import { createStyles, Anchor, Group, ActionIcon } from "@mantine/core";
 import {
   IconBrandTwitter,
@@ -32,6 +31,16 @@ const useStyles = createStyles((theme) => ({
       marginBottom: theme.spacing.sm,
     },
   },
+  logo: {
+    height: "2rem",
+    // border: "2px solid red",
+    // [theme.fn.smallerThan("md")]: {
+    //   border: "2px solid blue",
+    // },
+    // [theme.fn.smallerThan("sm")]: {
+    //   border: "2px solid green",
+    // },
+  },
 }));
 
 export default function FooterCentered() {
@@ -63,7 +72,7 @@ export default function FooterCentered() {
         <img
           src="https://languate.vercel.app/assets/logo.png"
           alt="Rentmine Logo"
-          className="footer-logo"
+          className={classes.logo}
         />
         <Group className={classes.links}>{items}</Group>
 
