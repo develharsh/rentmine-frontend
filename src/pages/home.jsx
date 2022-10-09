@@ -7,7 +7,7 @@ const Home = () => {
     <div>
       {state.userSession ? (
         <div>
-          <h1>Welcome to Home, Dear {state.userSession.name} {state.userSession.email}</h1>
+          <h1>Welcome to Home, Dear {state.userSession.name}</h1>
           <img src={state.userSession.picture} alt="as" />
         </div>
       ) : (

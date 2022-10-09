@@ -7,14 +7,17 @@ import {
   // Navigate,
 } from "react-router-dom";
 import Home from "./pages/home";
-import Signin from "./components/signin";
+// import Signin from "./components/signin";
+import Header from "./components/design/header";
+import Footer from "./components/design/footer";
 import Loading from "./components/design/loading";
 
 function App() {
   return (
     <Router>
-      <Signin />
+      <Header />
       <Loading />
+      {/* <Signin /> */}
       <Routes>
         <Route exact path="/" element={<Home />} />
         {/* <Route exact path="/signup" element={<Signup />} />
@@ -32,6 +35,7 @@ function App() {
         />
         */}
       </Routes>
+      <Footer />
     </Router>
   );
 }

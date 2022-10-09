@@ -5,7 +5,7 @@ import { IconCheck } from "@tabler/icons";
 import Cookie from "js-cookie";
 import { DataContext } from "../store/globalstate";
 
-const Signin = () => {
+const Signin = ({ uniqueId }) => {
   const { dispatch, state } = useContext(DataContext);
   const loginAction = async (resp) => {
     dispatch({ type: ACTIONS.LOADING, payload: true });
@@ -28,14 +28,17 @@ const Signin = () => {
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: loginAction,
     });
-    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-      theme: "outline",
-      size: "large",
-    });
+    google.accounts.id.renderButton(
+      document.getElementById(`signInDiv-${uniqueId}`),
+      {
+        theme: "outline",
+        size: "large",
+      }
+    );
   }, []);
   return (
     <div
-      id="signInDiv"
+      id={`signInDiv-${uniqueId}`}
       style={{ display: state.userSession ? "none" : "block" }}
     ></div>
   );
