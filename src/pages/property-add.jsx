@@ -10,6 +10,7 @@ import {
   NumberInput,
   Checkbox,
 } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
@@ -114,6 +115,8 @@ const PropertyAdd = () => {
         !["", undefined].includes(value)
           ? null
           : "Please Enter Monthly Maintenance Amount.",
+      availableFrom: (value) =>
+        value ? null : "Please Enter Date of Availability.",
     },
   });
   useEffect(() => {
@@ -137,7 +140,7 @@ const PropertyAdd = () => {
   } = useStyles();
 
   const handleSubmit = async (values) => {
-    return console.log(form);
+    return console.log(values);
     dispatch({ type: ACTIONS.LOADING, payload: true });
     const response = 1;
     dispatch({ type: ACTIONS.LOADING, payload: false });
@@ -301,15 +304,22 @@ const PropertyAdd = () => {
             {...form.getInputProps("monthlyMaintenance")}
             className={classes.element}
           />
-          {form.values.monthlyMaintenance == "Maintenance Extra" && (
+          {form.values.monthlyMaintenance === "Maintenance Extra" && (
             <NumberInput
               withAsterisk
-              placeholder="5000"
-              label="Maintenance Amount"
+              placeholder="300"
+              label="Monthly Maintenance Amount"
               {...form.getInputProps("maintenanceAmount")}
               className={classes.element}
             />
           )}
+          <DatePicker
+            placeholder="Select date"
+            label="Available From"
+            withAsterisk
+            {...form.getInputProps("availableFrom")}
+            className={classes.element}
+          />
           <div className="my-1">
             <Button fullWidth type="submit" className={classes.element}>
               Register
