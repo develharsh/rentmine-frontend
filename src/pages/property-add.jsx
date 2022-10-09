@@ -8,7 +8,7 @@ import {
   Box,
   createStyles,
   NumberInput,
-  Checkbox
+  Checkbox,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
@@ -109,6 +109,11 @@ const PropertyAdd = () => {
         !["", undefined].includes(value) ? null : "Please Enter Rent.",
       deposit: (value) =>
         !["", undefined].includes(value) ? null : "Please Enter Deposit.",
+      maintenanceAmount: (value) =>
+        form.values.monthlyMaintenance == "Maintenance Included" ||
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter Monthly Maintenance Amount.",
     },
   });
   useEffect(() => {
@@ -132,7 +137,7 @@ const PropertyAdd = () => {
   } = useStyles();
 
   const handleSubmit = async (values) => {
-    return console.log(values);
+    return console.log(form);
     dispatch({ type: ACTIONS.LOADING, payload: true });
     const response = 1;
     dispatch({ type: ACTIONS.LOADING, payload: false });
@@ -286,6 +291,25 @@ const PropertyAdd = () => {
             label="Rent Negotiable?"
             {...form.getInputProps("rentNegotiable")}
           />
+          <Select
+            label="Monthly Maintenance"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={["Maintenance Included", "Maintenance Extra"]}
+            {...form.getInputProps("monthlyMaintenance")}
+            className={classes.element}
+          />
+          {form.values.monthlyMaintenance == "Maintenance Extra" && (
+            <NumberInput
+              withAsterisk
+              placeholder="5000"
+              label="Maintenance Amount"
+              {...form.getInputProps("maintenanceAmount")}
+              className={classes.element}
+            />
+          )}
           <div className="my-1">
             <Button fullWidth type="submit" className={classes.element}>
               Register
