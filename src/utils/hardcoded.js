@@ -27,8 +27,11 @@ const values = {
     "South East",
     "North West",
     "South West",
-    "Don't Know"
+    "Don't Know",
   ],
+  preferredTenants: ["Doesn't Matter", "Family", "Bachelors", "Company"],
+  furnishings: ["Fully furnished", "Semi furnished", "Unfurnished"],
+  parkings: ["Bike", "Car", "Both", "None"],
 };
 
 for (let i = 1; i <= 99; ++i) {

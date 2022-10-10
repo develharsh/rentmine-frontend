@@ -1,19 +1,14 @@
-import { useEffect, useContext, useMemo } from "react";
+import { useEffect, useContext } from "react";
 import { SigninUser, ACTIONS } from "../store/actions";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import Cookie from "js-cookie";
 import { DataContext } from "../store/globalstate";
-import { useLocation, useNavigate } from "react-router-dom";
-
-function useQuery() {
-  const { search } = useLocation();
-  return useMemo(() => new URLSearchParams(search), [search]);
-}
+import { useSearchParams } from "react-router-dom";
 
 const Signin = ({ uniqueId }) => {
-  const query = useQuery();
-  const navigate = useNavigate();
+  const [search] = useSearchParams();
+  const callback = search.get("callback");
   const { dispatch, state } = useContext(DataContext);
   const loginAction = async (resp) => {
     dispatch({ type: ACTIONS.LOADING, payload: true });
@@ -28,7 +23,11 @@ const Signin = ({ uniqueId }) => {
       });
       Cookie.set("RentMineAuthToken", resp.credential);
       dispatch({ type: ACTIONS.AUTH, payload: response.data });
-      if (query.get("callback")) navigate(`/${query.get("callback")}`);
+      if (callback) {
+        // alert(callback);
+        window.open(`/${callback}`, "_self");
+      }
+      // else alert(callback);
     }
   };
   useEffect(() => {

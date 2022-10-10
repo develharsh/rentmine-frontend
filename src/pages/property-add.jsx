@@ -9,17 +9,16 @@ import {
   createStyles,
   NumberInput,
   Checkbox,
+  Textarea,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
-import { useNavigate } from "react-router-dom";
 import Utils from "../utils/hardcoded";
 import { State, City } from "country-state-city";
 
 const PropertyAdd = () => {
-  const navigate = useNavigate();
   const { state, dispatch } = useContext(DataContext);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -63,23 +62,23 @@ const PropertyAdd = () => {
       whoWillShowProperty: "",
       secondaryPhone: "",
       availableAmenities: {
-        lift: "",
-        internetServices: "",
-        airConditioner: "",
-        clubHouse: "",
-        interCom: "",
-        swimmingPool: "",
-        childrenPlayArea: "",
-        fireSafety: "",
-        servantRoom: "",
-        shoppingCenter: "",
-        gasPipeline: "",
-        park: "",
-        rainWaterHarvesting: "",
-        sewageTreatmentPlant: "",
-        houseKeeping: "",
-        powerBackup: "",
-        visitorParking: "",
+        lift: false,
+        internetServices: false,
+        airConditioner: false,
+        clubHouse: false,
+        interCom: false,
+        swimmingPool: false,
+        childrenPlayArea: false,
+        fireSafety: false,
+        servantRoom: false,
+        shoppingCenter: false,
+        gasPipeline: false,
+        park: false,
+        rainWaterHarvesting: false,
+        sewageTreatmentPlant: false,
+        houseKeeping: false,
+        powerBackup: false,
+        visitorParking: false,
       },
       photos: [],
       videos: [],
@@ -117,6 +116,15 @@ const PropertyAdd = () => {
           : "Please Enter Monthly Maintenance Amount.",
       availableFrom: (value) =>
         value ? null : "Please Enter Date of Availability.",
+      preferredTenant: (value) =>
+        value.length ? null : "Please Select Preferred Tenant.",
+      furnishing: (value) =>
+        value.length ? null : "Please Select Furnishing.",
+      parking: (value) => (value.length ? null : "Please Select Parking."),
+      bathroom: (value) =>
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter No. of Bathrooms.",
     },
   });
   useEffect(() => {
@@ -131,7 +139,7 @@ const PropertyAdd = () => {
 
   useEffect(() => {
     if (state.userSession === null) {
-      navigate("/?callback=property/add");
+      // window.open("/?callback=property/add", "_self");
     }
   }, [state.userSession]);
   const {
@@ -293,6 +301,7 @@ const PropertyAdd = () => {
           <Checkbox
             label="Rent Negotiable?"
             {...form.getInputProps("rentNegotiable")}
+            className={classes.element}
           />
           <Select
             label="Monthly Maintenance"
@@ -320,6 +329,58 @@ const PropertyAdd = () => {
             {...form.getInputProps("availableFrom")}
             className={classes.element}
           />
+          <Select
+            withAsterisk
+            label="Preferred Tenant"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.preferredTenants}
+            {...form.getInputProps("preferredTenant")}
+            className={classes.element}
+          />
+          <Select
+            withAsterisk
+            label="Furnishing"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.furnishings}
+            {...form.getInputProps("furnishing")}
+            className={classes.element}
+          />
+          <Select
+            withAsterisk
+            label="Parking"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.parkings}
+            {...form.getInputProps("parking")}
+            className={classes.element}
+          />
+          <Textarea
+            label="Description"
+            placeholder="This semi furnished 1 BHK is available for rent in Sector 40..."
+            {...form.getInputProps("description")}
+            className={classes.element}
+          />
+          <NumberInput
+            placeholder="No. of Bathroom"
+            label="Bathroom"
+            withAsterisk
+            {...form.getInputProps("bathroom")}
+            className={classes.element}
+          />
+          <NumberInput
+            placeholder="No. of Balcony"
+            label="Balcony"
+            {...form.getInputProps("balcony")}
+            className={classes.element}
+          />
           <div className="my-1">
             <Button fullWidth type="submit" className={classes.element}>
               Register
@@ -341,7 +402,7 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "space-evenly",
     gap: "1rem",
     flexWrap: "wrap",
-    alignItems: "center",
+    // alignItems: "center",
     // [theme.fn.smallerThan("md")]: {
     //   border: "2px solid blue",
     // },
