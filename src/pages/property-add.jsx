@@ -8,7 +8,7 @@ import {
   Box,
   createStyles,
   NumberInput,
-  Checkbox,
+  Radio,
   Textarea,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -17,11 +17,13 @@ import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import Utils from "../utils/hardcoded";
 import { State, City } from "country-state-city";
+// import { useNavigate } from "react-router-dom";
 
 const PropertyAdd = () => {
   const { state, dispatch } = useContext(DataContext);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+  // const navigate = useNavigate();
 
   useEffect(() => {
     setStates(
@@ -60,7 +62,7 @@ const PropertyAdd = () => {
       nonVegAllowed: "",
       gatedSecurity: "",
       whoWillShowProperty: "",
-      secondaryPhone: "",
+      phone: "",
       availableAmenities: {
         lift: false,
         internetServices: false,
@@ -125,6 +127,15 @@ const PropertyAdd = () => {
         !["", undefined].includes(value)
           ? null
           : "Please Enter No. of Bathrooms.",
+      gym: (value) => (value.length ? null : "Please Select Gym."),
+      nonVegAllowed: (value) =>
+        value.length ? null : "Please Select Food Choice.",
+      gatedSecurity: (value) =>
+        value.length ? null : "Please Select Security Type.",
+      whoWillShowProperty: (value) =>
+        value.length ? null : "Please Select Who will show property.",
+      phone: (value) =>
+        !["", undefined].includes(value) ? null : "Please Enter Contact Number.",
     },
   });
   useEffect(() => {
@@ -139,7 +150,7 @@ const PropertyAdd = () => {
 
   useEffect(() => {
     if (state.userSession === null) {
-      // window.open("/?callback=property/add", "_self");
+      window.open("/?callback=property/add", "_self");
     }
   }, [state.userSession]);
   const {
@@ -298,11 +309,14 @@ const PropertyAdd = () => {
             {...form.getInputProps("deposit")}
             className={classes.element}
           />
-          <Checkbox
-            label="Rent Negotiable?"
+          <Radio.Group
             {...form.getInputProps("rentNegotiable")}
+            label="Rent Negotiable?"
             className={classes.element}
-          />
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
           <Select
             label="Monthly Maintenance"
             placeholder="Click to Select"
@@ -379,6 +393,61 @@ const PropertyAdd = () => {
             placeholder="No. of Balcony"
             label="Balcony"
             {...form.getInputProps("balcony")}
+            className={classes.element}
+          />
+          <Select
+            label="Water Supply"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.waterSupplies}
+            {...form.getInputProps("waterSupply")}
+            className={classes.element}
+          />
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("gym")}
+            label="Gym?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("nonVegAllowed")}
+            label="Non Veg Allowed?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("gatedSecurity")}
+            label="Gated Security?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Select
+            withAsterisk
+            label="Who will show Property?"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.whoWillShowProperty}
+            {...form.getInputProps("whoWillShowProperty")}
+            className={classes.element}
+          />
+          <NumberInput
+            withAsterisk
+            placeholder="8077014444"
+            label="Contact No."
+            {...form.getInputProps("phone")}
             className={classes.element}
           />
           <div className="my-1">
