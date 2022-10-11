@@ -84,12 +84,6 @@ const PropertyAdd = () => {
         visitorParking: false,
       },
       photos: [],
-      yourAvailability: {
-        days: "",
-        allday: "",
-        startTime: "",
-        endTime: "",
-      },
     },
 
     // validate: {
@@ -182,7 +176,7 @@ const PropertyAdd = () => {
   }, [form.values.state]);
 
   useEffect(() => {
-    alert("photos");
+    // alert("photos");
     const files = form.values.photos;
     files.forEach((file) => {
       const reader = new FileReader();
@@ -690,7 +684,7 @@ const prepareForRequest = (values, photos) => {
   myForm.append("floor", values.floor);
   myForm.append("totalFloor", values.totalFloor);
   myForm.append("propertyAge", values.propertyAge);
-  myForm.append("facing", values.facing);
+  if (values.facing) myForm.append("facing", values.facing);
   myForm.append("billUpArea", values.billUpArea);
   myForm.append("state", values.state);
   myForm.append("city", values.city);
@@ -698,56 +692,94 @@ const prepareForRequest = (values, photos) => {
   myForm.append("landmark", values.landmark);
   myForm.append("rent", values.rent);
   myForm.append("deposit", values.deposit);
-  myForm.append("rentNegotiable", values.rentNegotiable);
+  if (values.rentNegotiable)
+    myForm.append("rentNegotiable", values.rentNegotiable);
   myForm.append("monthlyMaintenance", values.monthlyMaintenance);
-  if(values.maintenanceAmount) myForm.append("maintenanceAmount", values.maintenanceAmount);
+  if (values.monthlyMaintenance === "Maintenance Extra")
+    myForm.append("maintenanceAmount", values.maintenanceAmount);
   myForm.append("availableFrom", values.availableFrom);
   myForm.append("preferredTenant", values.preferredTenant);
   myForm.append("furnishing", values.furnishing);
   myForm.append("parking", values.parking);
-  if(values.description)myForm.append("description", values.description);
-  myForm.append("monthlyMaintenance", values.monthlyMaintenance);
-  myForm.append("monthlyMaintenance", values.monthlyMaintenance);
-  {
-    availableFrom: "",
-    preferredTenant: "",
-    furnishing: "",
-    parking: "",
-    description: "",
-    bathroom: "",
-    balcony: "",
-    waterSupply: "",
-    gym: "",
-    nonVegAllowed: "",
-    gatedSecurity: "",
-    phone: "",
-    availableAmenities: {
-      lift: false,
-      internetServices: false,
-      airConditioner: false,
-      clubHouse: false,
-      interCom: false,
-      swimmingPool: false,
-      childrenPlayArea: false,
-      fireSafety: false,
-      servantRoom: false,
-      shoppingCenter: false,
-      gasPipeline: false,
-      park: false,
-      rainWaterHarvesting: false,
-      sewageTreatmentPlant: false,
-      houseKeeping: false,
-      powerBackup: false,
-      visitorParking: false,
-    },
-    photos: [],
-    yourAvailability: {
-      days: "",
-      allday: "",
-      startTime: "",
-      endTime: "",
-    },
-  },
+  if (values.description) myForm.append("description", values.description);
+  myForm.append("bathroom", values.bathroom);
+  if (values.balcony) myForm.append("balcony", values.balcony);
+  myForm.append("waterSupply", values.waterSupply);
+  myForm.append("gym", values.gym);
+  myForm.append("nonVegAllowed", values.nonVegAllowed);
+  myForm.append("gatedSecurity", values.gatedSecurity);
+  myForm.append("phone", values.phone);
+  myForm.append("availableAmenities.lift", values.availableAmenities.lift);
+  myForm.append(
+    "availableAmenities.internetServices",
+    values.availableAmenities.internetServices
+  );
+  myForm.append(
+    "availableAmenities.airConditioner",
+    values.availableAmenities.airConditioner
+  );
+  myForm.append(
+    "availableAmenities.clubHouse",
+    values.availableAmenities.clubHouse
+  );
+  myForm.append(
+    "availableAmenities.interCom",
+    values.availableAmenities.interCom
+  );
+  myForm.append(
+    "availableAmenities.swimmingPool",
+    values.availableAmenities.swimmingPool
+  );
+  myForm.append(
+    "availableAmenities.childrenPlayArea",
+    values.availableAmenities.childrenPlayArea
+  );
+  myForm.append(
+    "availableAmenities.fireSafety",
+    values.availableAmenities.fireSafety
+  );
+  myForm.append(
+    "availableAmenities.servantRoom",
+    values.availableAmenities.servantRoom
+  );
+  myForm.append(
+    "availableAmenities.shoppingCenter",
+    values.availableAmenities.shoppingCenter
+  );
+  myForm.append(
+    "availableAmenities.gasPipeline",
+    values.availableAmenities.gasPipeline
+  );
+  myForm.append("availableAmenities.park", values.availableAmenities.park);
+  myForm.append(
+    "availableAmenities.rainWaterHarvesting",
+    values.availableAmenities.rainWaterHarvesting
+  );
+  myForm.append(
+    "availableAmenities.sewageTreatmentPlant",
+    values.availableAmenities.sewageTreatmentPlant
+  );
+  myForm.append(
+    "availableAmenities.houseKeeping",
+    values.availableAmenities.houseKeeping
+  );
+  myForm.append(
+    "availableAmenities.powerBackup",
+    values.availableAmenities.powerBackup
+  );
+  myForm.append(
+    "availableAmenities.visitorParking",
+    values.availableAmenities.visitorParking
+  );
+  photos.forEach((image) => {
+    myForm.append("photos", image);
+  });
+  // yourAvailability: {
+  //   days: "",
+  //   allday: "",
+  //   startTime: "",
+  //   endTime: "",
+  // },
 
   return myForm;
 };
