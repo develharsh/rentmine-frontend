@@ -18,14 +18,14 @@ import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import Utils from "../utils/hardcoded";
 import { State, City } from "country-state-city";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PropertyAdd = () => {
   const { state, dispatch } = useContext(DataContext);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [photos, setPhotos] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setStates(
@@ -86,84 +86,84 @@ const PropertyAdd = () => {
       photos: [],
     },
 
-    // validate: {
-    //   apartmentType: (value) =>
-    //     value.length ? null : "Please Select Apartment Type.",
-    //   bhkType: (value) => (value.length ? null : "Please Select BHK Type."),
-    //   floor: (value) => (value.length ? null : "Please Select Floor."),
-    //   totalFloor: (value) =>
-    //     value.length ? null : "Please Select Total Floors.",
-    //   propertyAge: (value) =>
-    //     value.length ? null : "Please Select Property Age.",
-    //   billUpArea: (value) =>
-    //     value.length ? null : "Please Enter Billup Area.",
-    //   state: (value) => (value.length ? null : "Please Enter State."),
-    //   city: (value) => (value.length ? null : "Please Enter City."),
-    //   locality: (value) => (value.length ? null : "Please Enter Locality."),
-    //   landmark: (value) => (value.length ? null : "Please Enter Landmark."),
-    //   rent: (value) =>
-    //     !["", undefined].includes(value) ? null : "Please Enter Rent.",
-    //   deposit: (value) =>
-    //     !["", undefined].includes(value) ? null : "Please Enter Deposit.",
-    //   maintenanceAmount: (value) =>
-    //     form.values.monthlyMaintenance === "Maintenance Included" ||
-    //     !["", undefined].includes(value)
-    //       ? null
-    //       : "Please Enter Monthly Maintenance Amount.",
-    //   availableFrom: (value) =>
-    //     value ? null : "Please Enter Date of Availability.",
-    //   preferredTenant: (value) =>
-    //     value.length ? null : "Please Select Preferred Tenant.",
-    //   furnishing: (value) =>
-    //     value.length ? null : "Please Select Furnishing.",
-    //   parking: (value) => (value.length ? null : "Please Select Parking."),
-    //   bathroom: (value) =>
-    //     !["", undefined].includes(value)
-    //       ? null
-    //       : "Please Enter No. of Bathrooms.",
-    //   gym: (value) => (value.length ? null : "Please Select Gym."),
-    //   nonVegAllowed: (value) =>
-    //     value.length ? null : "Please Select Food Choice.",
-    //   gatedSecurity: (value) =>
-    //     value.length ? null : "Please Select Security Type.",
-    //   phone: (value) =>
-    //     !["", undefined].includes(value)
-    //       ? null
-    //       : "Please Enter Contact Number.",
-    //   availableAmenities: {
-    //     lift: (value) => (value.length ? null : "Please Select Lift."),
-    //     internetServices: (value) =>
-    //       value.length ? null : "Please Select Internet Services.",
-    //     airConditioner: (value) =>
-    //       value.length ? null : "Please Select Air Conditioner.",
-    //     clubHouse: (value) =>
-    //       value.length ? null : "Please Select Club House.",
-    //     interCom: (value) => (value.length ? null : "Please Select Intercom."),
-    //     swimmingPool: (value) =>
-    //       value.length ? null : "Please Select Swimming Pool.",
-    //     childrenPlayArea: (value) =>
-    //       value.length ? null : "Please Select Children Play Area.",
-    //     fireSafety: (value) =>
-    //       value.length ? null : "Please Select Fire Safety.",
-    //     servantRoom: (value) =>
-    //       value.length ? null : "Please Select Servant Room.",
-    //     shoppingCenter: (value) =>
-    //       value.length ? null : "Please Select Shopping Center.",
-    //     gasPipeline: (value) =>
-    //       value.length ? null : "Please Select Gas Pipeline.",
-    //     park: (value) => (value.length ? null : "Please Select Park."),
-    //     rainWaterHarvesting: (value) =>
-    //       value.length ? null : "Please Select Rain Water Harvesting.",
-    //     sewageTreatmentPlant: (value) =>
-    //       value.length ? null : "Please Select Sewage Treatment Plant.",
-    //     houseKeeping: (value) =>
-    //       value.length ? null : "Please Select House Keeping.",
-    //     powerBackup: (value) =>
-    //       value.length ? null : "Please Select Power Backup.",
-    //     visitorParking: (value) =>
-    //       value.length ? null : "Please Select Visitor Parking.",
-    //   },
-    // },
+    validate: {
+      apartmentType: (value) =>
+        value.length ? null : "Please Select Apartment Type.",
+      bhkType: (value) => (value.length ? null : "Please Select BHK Type."),
+      floor: (value) => (value.length ? null : "Please Select Floor."),
+      totalFloor: (value) =>
+        value.length ? null : "Please Select Total Floors.",
+      propertyAge: (value) =>
+        value.length ? null : "Please Select Property Age.",
+      billUpArea: (value) =>
+        value.length ? null : "Please Enter Billup Area.",
+      state: (value) => (value.length ? null : "Please Enter State."),
+      city: (value) => (value.length ? null : "Please Enter City."),
+      locality: (value) => (value.length ? null : "Please Enter Locality."),
+      landmark: (value) => (value.length ? null : "Please Enter Landmark."),
+      rent: (value) =>
+        !["", undefined].includes(value) ? null : "Please Enter Rent.",
+      deposit: (value) =>
+        !["", undefined].includes(value) ? null : "Please Enter Deposit.",
+      maintenanceAmount: (value) =>
+        form.values.monthlyMaintenance === "Maintenance Included" ||
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter Monthly Maintenance Amount.",
+      availableFrom: (value) =>
+        value ? null : "Please Enter Date of Availability.",
+      preferredTenant: (value) =>
+        value.length ? null : "Please Select Preferred Tenant.",
+      furnishing: (value) =>
+        value.length ? null : "Please Select Furnishing.",
+      parking: (value) => (value.length ? null : "Please Select Parking."),
+      bathroom: (value) =>
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter No. of Bathrooms.",
+      gym: (value) => (value.length ? null : "Please Select Gym."),
+      nonVegAllowed: (value) =>
+        value.length ? null : "Please Select Food Choice.",
+      gatedSecurity: (value) =>
+        value.length ? null : "Please Select Security Type.",
+      phone: (value) =>
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter Contact Number.",
+      availableAmenities: {
+        lift: (value) => (value.length ? null : "Please Select Lift."),
+        internetServices: (value) =>
+          value.length ? null : "Please Select Internet Services.",
+        airConditioner: (value) =>
+          value.length ? null : "Please Select Air Conditioner.",
+        clubHouse: (value) =>
+          value.length ? null : "Please Select Club House.",
+        interCom: (value) => (value.length ? null : "Please Select Intercom."),
+        swimmingPool: (value) =>
+          value.length ? null : "Please Select Swimming Pool.",
+        childrenPlayArea: (value) =>
+          value.length ? null : "Please Select Children Play Area.",
+        fireSafety: (value) =>
+          value.length ? null : "Please Select Fire Safety.",
+        servantRoom: (value) =>
+          value.length ? null : "Please Select Servant Room.",
+        shoppingCenter: (value) =>
+          value.length ? null : "Please Select Shopping Center.",
+        gasPipeline: (value) =>
+          value.length ? null : "Please Select Gas Pipeline.",
+        park: (value) => (value.length ? null : "Please Select Park."),
+        rainWaterHarvesting: (value) =>
+          value.length ? null : "Please Select Rain Water Harvesting.",
+        sewageTreatmentPlant: (value) =>
+          value.length ? null : "Please Select Sewage Treatment Plant.",
+        houseKeeping: (value) =>
+          value.length ? null : "Please Select House Keeping.",
+        powerBackup: (value) =>
+          value.length ? null : "Please Select Power Backup.",
+        visitorParking: (value) =>
+          value.length ? null : "Please Select Visitor Parking.",
+      },
+    },
   });
   useEffect(() => {
     if (form.values.state)
@@ -215,6 +215,7 @@ const PropertyAdd = () => {
       });
       form.reset();
       dispatch({ type: ACTIONS.DEMOPOPUP, payload: false });
+      navigate("/");
     } else {
       showNotification({
         title: "Oops",
@@ -639,7 +640,6 @@ const PropertyAdd = () => {
             placeholder="Click to Select"
             label="Photos of Property"
             multiple
-            withAsterisk
             {...form.getInputProps("photos")}
             className={classes.element}
             accept="image/*"
@@ -685,7 +685,7 @@ const prepareForRequest = (values, photos) => {
   myForm.append("floor", values.floor);
   myForm.append("totalFloor", values.totalFloor);
   myForm.append("propertyAge", values.propertyAge);
-  if (values.facing) myForm.append("facing", values.facing);
+  myForm.append("facing", values.facing);
   myForm.append("billUpArea", values.billUpArea);
   myForm.append("state", values.state);
   myForm.append("city", values.city);
@@ -693,7 +693,6 @@ const prepareForRequest = (values, photos) => {
   myForm.append("landmark", values.landmark);
   myForm.append("rent", values.rent);
   myForm.append("deposit", values.deposit);
-  if (values.rentNegotiable)
     myForm.append("rentNegotiable", values.rentNegotiable);
   myForm.append("monthlyMaintenance", values.monthlyMaintenance);
   if (values.monthlyMaintenance === "Maintenance Extra")
@@ -702,86 +701,21 @@ const prepareForRequest = (values, photos) => {
   myForm.append("preferredTenant", values.preferredTenant);
   myForm.append("furnishing", values.furnishing);
   myForm.append("parking", values.parking);
-  if (values.description) myForm.append("description", values.description);
+  myForm.append("description", values.description);
   myForm.append("bathroom", values.bathroom);
-  if (values.balcony) myForm.append("balcony", values.balcony);
+  myForm.append("balcony", values.balcony);
   myForm.append("waterSupply", values.waterSupply);
   myForm.append("gym", values.gym);
   myForm.append("nonVegAllowed", values.nonVegAllowed);
   myForm.append("gatedSecurity", values.gatedSecurity);
   myForm.append("phone", values.phone);
-  myForm.append("availableAmenities.lift", values.availableAmenities.lift);
   myForm.append(
-    "availableAmenities.internetServices",
-    values.availableAmenities.internetServices
-  );
-  myForm.append(
-    "availableAmenities.airConditioner",
-    values.availableAmenities.airConditioner
-  );
-  myForm.append(
-    "availableAmenities.clubHouse",
-    values.availableAmenities.clubHouse
-  );
-  myForm.append(
-    "availableAmenities.interCom",
-    values.availableAmenities.interCom
-  );
-  myForm.append(
-    "availableAmenities.swimmingPool",
-    values.availableAmenities.swimmingPool
-  );
-  myForm.append(
-    "availableAmenities.childrenPlayArea",
-    values.availableAmenities.childrenPlayArea
-  );
-  myForm.append(
-    "availableAmenities.fireSafety",
-    values.availableAmenities.fireSafety
-  );
-  myForm.append(
-    "availableAmenities.servantRoom",
-    values.availableAmenities.servantRoom
-  );
-  myForm.append(
-    "availableAmenities.shoppingCenter",
-    values.availableAmenities.shoppingCenter
-  );
-  myForm.append(
-    "availableAmenities.gasPipeline",
-    values.availableAmenities.gasPipeline
-  );
-  myForm.append("availableAmenities.park", values.availableAmenities.park);
-  myForm.append(
-    "availableAmenities.rainWaterHarvesting",
-    values.availableAmenities.rainWaterHarvesting
-  );
-  myForm.append(
-    "availableAmenities.sewageTreatmentPlant",
-    values.availableAmenities.sewageTreatmentPlant
-  );
-  myForm.append(
-    "availableAmenities.houseKeeping",
-    values.availableAmenities.houseKeeping
-  );
-  myForm.append(
-    "availableAmenities.powerBackup",
-    values.availableAmenities.powerBackup
-  );
-  myForm.append(
-    "availableAmenities.visitorParking",
-    values.availableAmenities.visitorParking
+    "availableAmenities",
+    JSON.stringify(values.availableAmenities)
   );
   photos.forEach((image) => {
     myForm.append("photos", image);
   });
-  // yourAvailability: {
-  //   days: "",
-  //   allday: "",
-  //   startTime: "",
-  //   endTime: "",
-  // },
-
   return myForm;
 };
 
