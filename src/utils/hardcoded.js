@@ -30,8 +30,9 @@ const values = {
     "Don't Know",
   ],
   preferredTenants: ["Doesn't Matter", "Family", "Bachelors", "Company"],
-  furnishings: ["Fully furnished", "Semi furnished", "Unfurnished"],
+  furnishings: ["Fully furnished", "Semi-furnished", "Unfurnished"],
   parkings: ["Bike", "Car", "Both", "None"],
+  waterSupplies: ["Corporation", "Borewell", "Both"],
 };
 
 for (let i = 1; i <= 99; ++i) {

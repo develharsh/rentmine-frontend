@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../store/globalstate";
-import { ACTIONS } from "../store/actions";
+import { ACTIONS, PropertyAddReq } from "../store/actions";
 import {
   Button,
   TextInput,
@@ -8,8 +8,9 @@ import {
   Box,
   createStyles,
   NumberInput,
-  Checkbox,
+  Radio,
   Textarea,
+  FileInput,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -17,11 +18,14 @@ import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import Utils from "../utils/hardcoded";
 import { State, City } from "country-state-city";
+import { useNavigate } from "react-router-dom";
 
 const PropertyAdd = () => {
   const { state, dispatch } = useContext(DataContext);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+  const [photos, setPhotos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setStates(
@@ -59,8 +63,7 @@ const PropertyAdd = () => {
       gym: "",
       nonVegAllowed: "",
       gatedSecurity: "",
-      whoWillShowProperty: "",
-      secondaryPhone: "",
+      phone: "",
       availableAmenities: {
         lift: false,
         internetServices: false,
@@ -81,13 +84,6 @@ const PropertyAdd = () => {
         visitorParking: false,
       },
       photos: [],
-      videos: [],
-      yourAvailability: {
-        days: "",
-        allday: "",
-        startTime: "",
-        endTime: "",
-      },
     },
 
     validate: {
@@ -110,7 +106,7 @@ const PropertyAdd = () => {
       deposit: (value) =>
         !["", undefined].includes(value) ? null : "Please Enter Deposit.",
       maintenanceAmount: (value) =>
-        form.values.monthlyMaintenance == "Maintenance Included" ||
+        form.values.monthlyMaintenance === "Maintenance Included" ||
         !["", undefined].includes(value)
           ? null
           : "Please Enter Monthly Maintenance Amount.",
@@ -125,6 +121,48 @@ const PropertyAdd = () => {
         !["", undefined].includes(value)
           ? null
           : "Please Enter No. of Bathrooms.",
+      gym: (value) => (value.length ? null : "Please Select Gym."),
+      nonVegAllowed: (value) =>
+        value.length ? null : "Please Select Food Choice.",
+      gatedSecurity: (value) =>
+        value.length ? null : "Please Select Security Type.",
+      phone: (value) =>
+        !["", undefined].includes(value)
+          ? null
+          : "Please Enter Contact Number.",
+      availableAmenities: {
+        lift: (value) => (value.length ? null : "Please Select Lift."),
+        internetServices: (value) =>
+          value.length ? null : "Please Select Internet Services.",
+        airConditioner: (value) =>
+          value.length ? null : "Please Select Air Conditioner.",
+        clubHouse: (value) =>
+          value.length ? null : "Please Select Club House.",
+        interCom: (value) => (value.length ? null : "Please Select Intercom."),
+        swimmingPool: (value) =>
+          value.length ? null : "Please Select Swimming Pool.",
+        childrenPlayArea: (value) =>
+          value.length ? null : "Please Select Children Play Area.",
+        fireSafety: (value) =>
+          value.length ? null : "Please Select Fire Safety.",
+        servantRoom: (value) =>
+          value.length ? null : "Please Select Servant Room.",
+        shoppingCenter: (value) =>
+          value.length ? null : "Please Select Shopping Center.",
+        gasPipeline: (value) =>
+          value.length ? null : "Please Select Gas Pipeline.",
+        park: (value) => (value.length ? null : "Please Select Park."),
+        rainWaterHarvesting: (value) =>
+          value.length ? null : "Please Select Rain Water Harvesting.",
+        sewageTreatmentPlant: (value) =>
+          value.length ? null : "Please Select Sewage Treatment Plant.",
+        houseKeeping: (value) =>
+          value.length ? null : "Please Select House Keeping.",
+        powerBackup: (value) =>
+          value.length ? null : "Please Select Power Backup.",
+        visitorParking: (value) =>
+          value.length ? null : "Please Select Visitor Parking.",
+      },
     },
   });
   useEffect(() => {
@@ -138,8 +176,24 @@ const PropertyAdd = () => {
   }, [form.values.state]);
 
   useEffect(() => {
+    // alert("photos");
+    setPhotos([]);
+    const files = form.values.photos;
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setPhotos((old) => [...old, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }, [form.values.photos]);
+
+  useEffect(() => {
     if (state.userSession === null) {
-      // window.open("/?callback=property/add", "_self");
+      window.open("/?callback=property/add", "_self");
     }
   }, [state.userSession]);
   const {
@@ -148,9 +202,9 @@ const PropertyAdd = () => {
   } = useStyles();
 
   const handleSubmit = async (values) => {
-    return console.log(values);
+    values = prepareForRequest(values, photos);
     dispatch({ type: ACTIONS.LOADING, payload: true });
-    const response = 1;
+    const response = await PropertyAddReq(values);
     dispatch({ type: ACTIONS.LOADING, payload: false });
     if (response.success) {
       showNotification({
@@ -161,6 +215,7 @@ const PropertyAdd = () => {
       });
       form.reset();
       dispatch({ type: ACTIONS.DEMOPOPUP, payload: false });
+      navigate("/");
     } else {
       showNotification({
         title: "Oops",
@@ -298,11 +353,14 @@ const PropertyAdd = () => {
             {...form.getInputProps("deposit")}
             className={classes.element}
           />
-          <Checkbox
-            label="Rent Negotiable?"
+          <Radio.Group
             {...form.getInputProps("rentNegotiable")}
+            label="Rent Negotiable?"
             className={classes.element}
-          />
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
           <Select
             label="Monthly Maintenance"
             placeholder="Click to Select"
@@ -381,6 +439,211 @@ const PropertyAdd = () => {
             {...form.getInputProps("balcony")}
             className={classes.element}
           />
+          <Select
+            label="Water Supply"
+            placeholder="Click to Select"
+            searchable
+            clearable
+            nothingFound="No options"
+            data={Utils.waterSupplies}
+            {...form.getInputProps("waterSupply")}
+            className={classes.element}
+          />
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("gym")}
+            label="Gym?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("nonVegAllowed")}
+            label="Non Veg Allowed?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("gatedSecurity")}
+            label="Gated Security?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <NumberInput
+            withAsterisk
+            placeholder="8077014444"
+            label="Contact No."
+            {...form.getInputProps("phone")}
+            className={classes.element}
+          />
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.lift")}
+            label="Lift?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.internetServices")}
+            label="Internet Services?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.airConditioner")}
+            label="Air Conditioner?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.clubHouse")}
+            label="Club House?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.interCom")}
+            label="Inter Com?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.swimmingPool")}
+            label="Swimming Pool?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.childrenPlayArea")}
+            label="Children Play Area?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.fireSafety")}
+            label="Fire Safety?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.servantRoom")}
+            label="Servant Room?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.shoppingCenter")}
+            label="Shopping Center?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.gasPipeline")}
+            label="Gas Pipeline?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.park")}
+            label="Park?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.rainWaterHarvesting")}
+            label="Rain Water Harvesting?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.sewageTreatmentPlant")}
+            label="Sewage Treatment Plant?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.houseKeeping")}
+            label="House Keeping?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.powerBackup")}
+            label="Power Backup?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <Radio.Group
+            withAsterisk
+            {...form.getInputProps("availableAmenities.visitorParking")}
+            label="Visitor Parking?"
+            className={classes.element}
+          >
+            <Radio value="true" label="Yes" />
+            <Radio value="false" label="No" />
+          </Radio.Group>
+          <FileInput
+            placeholder="Click to Select"
+            label="Photos of Property"
+            multiple
+            {...form.getInputProps("photos")}
+            className={classes.element}
+            accept="image/*"
+          />
           <div className="my-1">
             <Button fullWidth type="submit" className={classes.element}>
               Register
@@ -414,5 +677,46 @@ const useStyles = createStyles((theme) => ({
     width: "18rem",
   },
 }));
+
+const prepareForRequest = (values, photos) => {
+  const myForm = new FormData();
+  myForm.append("apartmentType", values.apartmentType);
+  myForm.append("bhkType", values.bhkType);
+  myForm.append("floor", values.floor);
+  myForm.append("totalFloor", values.totalFloor);
+  myForm.append("propertyAge", values.propertyAge);
+  myForm.append("facing", values.facing);
+  myForm.append("billUpArea", values.billUpArea);
+  myForm.append("state", values.state);
+  myForm.append("city", values.city);
+  myForm.append("locality", values.locality);
+  myForm.append("landmark", values.landmark);
+  myForm.append("rent", values.rent);
+  myForm.append("deposit", values.deposit);
+    myForm.append("rentNegotiable", values.rentNegotiable);
+  myForm.append("monthlyMaintenance", values.monthlyMaintenance);
+  if (values.monthlyMaintenance === "Maintenance Extra")
+    myForm.append("maintenanceAmount", values.maintenanceAmount);
+  myForm.append("availableFrom", values.availableFrom);
+  myForm.append("preferredTenant", values.preferredTenant);
+  myForm.append("furnishing", values.furnishing);
+  myForm.append("parking", values.parking);
+  myForm.append("description", values.description);
+  myForm.append("bathroom", values.bathroom);
+  myForm.append("balcony", values.balcony);
+  myForm.append("waterSupply", values.waterSupply);
+  myForm.append("gym", values.gym);
+  myForm.append("nonVegAllowed", values.nonVegAllowed);
+  myForm.append("gatedSecurity", values.gatedSecurity);
+  myForm.append("phone", values.phone);
+  myForm.append(
+    "availableAmenities",
+    JSON.stringify(values.availableAmenities)
+  );
+  photos.forEach((image) => {
+    myForm.append("photos", image);
+  });
+  return myForm;
+};
 
 export default PropertyAdd;
