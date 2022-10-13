@@ -177,6 +177,7 @@ const PropertyAdd = () => {
 
   useEffect(() => {
     // alert("photos");
+    setPhotos([]);
     const files = form.values.photos;
     files.forEach((file) => {
       const reader = new FileReader();
