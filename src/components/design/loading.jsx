@@ -4,7 +4,13 @@ import { DataContext } from "../../store/globalstate";
 
 const Loading = () => {
   const { state } = useContext(DataContext);
-  return <LoadingOverlay visible={state.loading} overlayBlur={1} />;
+  return (
+    <LoadingOverlay
+      visible={state.loading}
+      overlayBlur={1}
+      sx={{ position: "fixed" }}
+    />
+  );
 };
 
 export default Loading;

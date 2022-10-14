@@ -37,6 +37,18 @@ export const PropertyAddReq = async (payload) => {
   }
 };
 
+export const PropertyListReq = async () => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${Utils.BASE_URL}/v1/property/list`,
+    });
+    return response.data;
+  } catch (err) {
+    return { success: false, message: err.response.data.message };
+  }
+};
+
 export const sendMail = (type, message) => {
   //type: visitor, event
   try {
