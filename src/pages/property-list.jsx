@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import { createStyles } from "@mantine/core";
 import { ACTIONS, PropertyListReq } from "../store/actions";
 import { DataContext } from "../store/globalstate";
+import PropertyCard from "../components/custom/property-card";
 
 const PropertyList = () => {
   const {
@@ -17,21 +18,11 @@ const PropertyList = () => {
   return (
     <>
       <h1 className={classes.Heading}>Property List</h1>
-      {properties.map((each, idx) => (
-        <div key={idx}>
-          <div>
-            {each.photos.map((photo, idx) => (
-              <img
-                key={idx}
-                className={classes.photos}
-                src={photo.Location}
-                alt="rentmine"
-              />
-            ))}
-          </div>
-          <p>{each.bhkType}.</p>
-        </div>
-      ))}
+      <div className={classes.gridOfProps}>
+        {properties.map((each, idx) => (
+          <PropertyCard data={each} key={idx} />
+        ))}
+      </div>
     </>
   );
 };
@@ -43,6 +34,18 @@ const useStyles = createStyles((theme) => ({
   },
   photos: {
     width: "18rem",
+  },
+  gridOfProps: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    gap: "1rem",
+    // [theme.fn.smallerThan("md")]: {
+    //   border: "2px solid blue",
+    // },
+    // [theme.fn.smallerThan("sm")]: {
+    //   border: "2px solid green",
+    // },
   },
 }));
 
